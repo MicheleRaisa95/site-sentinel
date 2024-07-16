@@ -3,10 +3,7 @@
   "name": "URL Safety Checker",
   "version": "1.0",
   "description": "Check if the website is malicious.",
-  "permissions": ["tabs", "activeTab", "webRequest"],
-  "background": {
-    "service_worker": "background.js"
-  },
+  "permissions": ["tabs", "activeTab", "scripting"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -14,11 +11,5 @@
       "48": "images/icon48.png",
       "128": "images/icon128.png"
     }
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
-    }
-  ]
+  }
 }

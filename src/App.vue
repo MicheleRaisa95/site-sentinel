@@ -25,12 +25,29 @@ export default {
         currentWindow: true,
       });
       this.url = tab.url;
-      chrome.runtime.sendMessage(
-        { action: "checkUrl", url: this.url },
-        (response) => {
-          this.urlInfo = response;
+      const response = await fetch(
+        `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=YOUR_API_KEY`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            client: {
+              clientId: "your-client-id",
+              clientVersion: "1.0",
+            },
+            threatInfo: {
+              threatTypes: ["MALWARE", "SOCIAL_ENGINEERING"],
+              platformTypes: ["ANY_PLATFORM"],
+              threatEntryTypes: ["URL"],
+              threatEntries: [{ url: this.url }],
+            },
+          }),
         }
       );
+      const data = await response.json();
+      this.urlInfo = { isMalicious: data.matches ? true : false };
     },
   },
 };
